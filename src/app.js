@@ -5,6 +5,8 @@ const hbs = require("hbs");
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 const publicDirPath = path.join(__dirname, '../public');
@@ -48,7 +50,7 @@ app.get('/weather', (req, res) => {
         });
     }
 
-    geocode(req.query.address, (error, { latitude, longitude, location }={}) => {
+    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
         if (error) {
             return res.send({
                 errorMsg: error
@@ -63,7 +65,7 @@ app.get('/weather', (req, res) => {
             res.send({
                 forecast: forecastData,
                 location,
-                address:req.query.address
+                address: req.query.address
             });
         })
     })
@@ -88,6 +90,6 @@ app.get('*', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('The server started on port 3000');
+app.listen(port, () => {
+    console.log('The server started on port ' + port);
 });
